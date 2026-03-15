@@ -11,11 +11,12 @@
     "lesson1:interaction": "node ./01_01_interaction/app.js",
     "lesson1:structured": "node ./01_01_structured/app.js",
     "lesson1:grounding": "node ./01_01_grounding/app.js",
-    "lesson1:file-filter": "node ./lessons/01/app.js",
+    "lesson1:file-filter": "node ./lessons/01/s01e01.js",
     "lesson2:install": "npm install --prefix ./01_02_tool_use",
     "lesson2:tool_use": "node ./01_02_tool_use/app.js",
     "lesson2:tools": "node ./01_02_tools/app.js",
     "lesson2:minimal": "node ./01_02_tools/app.js",
+    "lesson2:findhim": "node ./lessons/02/s01e02.js",
     "lesson3:install": "npm install --prefix ./mcp/files-mcp && npm install --prefix ./01_03_mcp_core && npm install --prefix ./01_03_mcp_native && npm install --prefix ./01_03_mcp_translator && npm install --prefix ./01_03_upload_mcp",
     "lesson3:mcp_core": "node ./01_03_mcp_core/app.js",
     "lesson3:mcp_native": "node ./01_03_mcp_native/app.js",
@@ -57,7 +58,5 @@
     "lesson19:daily-news": "node ./04_04_system/demo-daily-news.js",
     "prelesson19:examples": "npm run ensure:files-mcp",
     "lesson19:examples": "node ./04_04_system/demo-example-queries.js"
-    "lesson1:grounding": "node ./01_01_grounding/app.js",
-    "lesson1:file-filter": "node ./lessons/01/app.js"
   }
 }
