@@ -57,7 +57,7 @@ export async function run(sessionID: string, userMsg: string): Promise<string> {
   const userMessage: Message = { role: "user", content: userMsg };
   const input = [...history, userMessage];
 
-  console.log(`[agent] session=${sessionID} history=${history.length} msg="${userMsg.slice(0, 80)}"`);
+  console.log(`[agent] session=${sessionID} history=${history.length} msg="${userMsg.slice(0, 255)}"`);
 
   let messages = input;
 
@@ -70,7 +70,7 @@ export async function run(sessionID: string, userMsg: string): Promise<string> {
     if (toolCalls.length === 0) {
       // Model returned a text response — persist history and return
       const text = extractText(response) ?? "Przepraszam, coś poszło nie tak.";
-      console.log(`[agent] text response: "${text.slice(0, 120)}"`);
+      console.log(`[agent] text response: "${text.slice(0, 255)}"`);
 
       addMessages(sessionID, userMessage, ...((response.output as Message[]) ?? []));
       return text;
