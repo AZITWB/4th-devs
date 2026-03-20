@@ -14,13 +14,5 @@ export const parseArgs = (raw: string): Record<string, unknown> => {
   return parsed as Record<string, unknown>
 }
 
-export const getMessageText = (message: { content: Array<{ type: string; text?: string }> }): string => {
-  let text = ''
-  for (const part of message.content) {
-    if (part.type === 'output_text' && part.text) text += part.text
-  }
-  return text
-}
-
 export const formatError = (err: unknown): string =>
   err instanceof Error ? err.message : String(err)

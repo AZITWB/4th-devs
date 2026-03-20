@@ -74,10 +74,6 @@ export interface Tool {
   handler: (args: Record<string, unknown>) => Promise<string>
 }
 
-export type ResponseOutputItem =
-  | { type: 'message'; content: Array<{ type: string; text?: string }> }
-  | { type: 'function_call'; call_id: string; name: string; arguments: string }
-
 export interface AgentResult {
   response: string
   usage: {

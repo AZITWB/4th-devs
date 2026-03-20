@@ -1,8 +1,8 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises'
 import { join, resolve, relative, dirname } from 'node:path'
-import type { Tool, ResolvedTool } from './types.js'
-import { WORKSPACE } from './config.js'
-import { formatError } from './utils.js'
+import type { Tool, ResolvedTool } from '../types.js'
+import { WORKSPACE } from '../config.js'
+import { formatError } from '../helpers/utils.js'
 
 const isPathSafe = (path: string): boolean => {
   const fullPath = resolve(join(WORKSPACE, path))
@@ -64,23 +64,27 @@ export const tools: Tool[] = [
   },
 ]
 
+const toolsByName = new Map(tools.map((tool) => [tool.definition.name, tool] as const))
+
+const toResolvedTool = (tool: Tool): ResolvedTool => ({
+  type: 'function',
+  name: tool.definition.name,
+  description: tool.definition.description,
+  parameters: tool.definition.parameters,
+  strict: false,
+})
+
 export const findTool = (name: string): Tool | undefined =>
-  tools.find((t) => t.definition.name === name)
+  toolsByName.get(name)
 
 export const resolveAgentTools = (toolNames: string[]): ResolvedTool[] => {
   const resolved: ResolvedTool[] = []
 
   for (const toolName of toolNames) {
-    const tool = tools.find((t) => t.definition.name === toolName)
+    const tool = toolsByName.get(toolName)
     if (!tool) continue
 
-    resolved.push({
-      type: 'function',
-      name: tool.definition.name,
-      description: tool.definition.description,
-      parameters: tool.definition.parameters,
-      strict: false,
-    })
+    resolved.push(toResolvedTool(tool))
   }
 
   return resolved

@@ -8,9 +8,9 @@
 import OpenAI from 'openai'
 import type { Message, ObserverResult } from '../types.js'
 import { isTextMessage, isFunctionCall, isFunctionCallOutput } from '../types.js'
-import { estimateTokensRaw } from '../tokens.js'
-import { truncate, extractTag } from '../utils.js'
-import { log } from '../log.js'
+import { estimateTokensRaw } from '../ai/tokens.js'
+import { truncate, extractTag } from '../helpers/utils.js'
+import { log } from '../helpers/log.js'
 import { OBSERVER_MAX_SECTION_CHARS, OBSERVER_MAX_TOOL_PAYLOAD_CHARS, OBSERVER_MAX_OUTPUT_TOKENS } from '../config.js'
 import { OBSERVER_SYSTEM_PROMPT, buildObserverPrompt } from './prompts.js'
 

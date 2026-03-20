@@ -2,13 +2,14 @@ import type OpenAI from 'openai'
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import matter from 'gray-matter'
-import type { AgentResult, AgentTemplate, FunctionCallItem, ResponseOutputItem, Session } from './types.js'
+import type { AgentResult, AgentTemplate, FunctionCallItem, Session } from '../types.js'
 import { findTool, resolveAgentTools } from './tools.js'
-import { processMemory } from './memory/processor.js'
-import { estimateMessagesTokens, trackUsage, getCalibration } from './tokens.js'
-import { openai, resolveModelForProvider, WORKSPACE, AGENT_MAX_TURNS, DEFAULT_MEMORY_CONFIG } from './config.js'
-import { truncate, parseArgs, getMessageText, formatError } from './utils.js'
-import { log, logError } from './log.js'
+import { processMemory } from '../memory/processor.js'
+import { estimateMessagesTokens, trackUsage, getCalibration } from '../ai/tokens.js'
+import { openai, resolveModelForProvider, WORKSPACE, AGENT_MAX_TURNS, DEFAULT_MEMORY_CONFIG, DEFAULT_AGENT_NAME } from '../config.js'
+import { ResponseOutputItem, getResponseMessageText } from '../ai/response.js'
+import { truncate, parseArgs, formatError } from '../helpers/utils.js'
+import { log, logError } from '../helpers/log.js'
 
 const loadAgent = async (name: string): Promise<AgentTemplate> => {
   const raw = await readFile(join(WORKSPACE, 'agents', `${name}.agent.md`), 'utf-8')
@@ -26,7 +27,7 @@ const applyResponseOutput = (session: Session, output: ResponseOutputItem[]): Fu
 
   for (const item of output) {
     if (item.type === 'message') {
-      const text = getMessageText(item)
+      const text = getResponseMessageText(item)
       if (text) session.messages.push({ role: 'assistant', content: text })
       continue
     }
@@ -58,8 +59,12 @@ const executeToolCall = async (session: Session, call: FunctionCallItem): Promis
   session.messages.push({ type: 'function_call_output', call_id: call.call_id, output })
 }
 
-export const runAgent = async (session: Session, userMessage: string): Promise<AgentResult> => {
-  const template = await loadAgent('alice')
+export const runAgent = async (
+  session: Session,
+  userMessage: string,
+  agentName = DEFAULT_AGENT_NAME,
+): Promise<AgentResult> => {
+  const template = await loadAgent(agentName)
   const model = resolveModelForProvider(template.model) as string
   const responsesTools = resolveAgentTools(template.tools)
   const cal = session.memory.calibration

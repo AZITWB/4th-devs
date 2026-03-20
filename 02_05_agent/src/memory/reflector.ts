@@ -7,9 +7,9 @@
 
 import OpenAI from 'openai'
 import type { CalibrationState, ReflectorResult } from '../types.js'
-import { estimateTokens } from '../tokens.js'
-import { extractTag } from '../utils.js'
-import { log } from '../log.js'
+import { estimateTokens } from '../ai/tokens.js'
+import { extractTag } from '../helpers/utils.js'
+import { log } from '../helpers/log.js'
 import { REFLECTOR_MAX_OUTPUT_TOKENS } from '../config.js'
 import { REFLECTOR_SYSTEM_PROMPT, REFLECTOR_COMPRESSION_LEVELS, buildReflectorPrompt } from './prompts.js'
 

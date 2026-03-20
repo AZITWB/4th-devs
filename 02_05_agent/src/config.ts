@@ -1,5 +1,6 @@
 import OpenAI from 'openai'
 import { join } from 'node:path'
+import type { MemoryConfig } from './types.js'
 // @ts-ignore — root config is untyped JS
 import { AI_API_KEY, CHAT_API_BASE_URL, EXTRA_API_HEADERS, resolveModelForProvider } from '../../config.js'
 
@@ -15,6 +16,7 @@ export const openai = new OpenAI({
 
 export const SERVER_PORT = 3001
 
+export const DEFAULT_AGENT_NAME = 'alice'
 export const AGENT_MAX_TURNS = 25
 
 export const TOKEN_CHARS_PER_TOKEN = 4
@@ -27,8 +29,6 @@ export const OBSERVER_MAX_OUTPUT_TOKENS = 8_000
 export const REFLECTOR_MAX_OUTPUT_TOKENS = 10_000
 
 export const MEMORY_DIR = join(WORKSPACE, 'memory')
-
-import type { MemoryConfig } from './types.js'
 
 // Thresholds are intentionally low so the observer/reflector cycle
 // triggers within a short demo conversation. In production you'd

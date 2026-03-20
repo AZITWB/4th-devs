@@ -2,11 +2,11 @@ import { Hono } from 'hono'
 import { serve } from '@hono/node-server'
 import { cors } from 'hono/cors'
 import { randomUUID } from 'node:crypto'
-import { runAgent } from './agent.js'
+import { runAgent } from './agent/agent.js'
 import { flushMemory } from './memory/processor.js'
-import { openai, SERVER_PORT } from './config.js'
-import { truncate } from './utils.js'
-import { log, logError } from './log.js'
+import { openai, SERVER_PORT, DEFAULT_AGENT_NAME } from './config.js'
+import { truncate } from './helpers/utils.js'
+import { log, logError } from './helpers/log.js'
 import { getSession, getOrCreateSession, listSessions, buildMemorySummary } from './session.js'
 
 const app = new Hono()
@@ -25,7 +25,7 @@ app.post('/api/chat', async (c) => {
   log('session', `${sessionId.slice(0, 8)} "${truncate(message, 60)}"`)
 
   try {
-    const result = await runAgent(session, message)
+    const result = await runAgent(session, message, DEFAULT_AGENT_NAME)
 
     return c.json({
       session_id: sessionId,
