@@ -3,7 +3,7 @@ import {
   EXTRA_API_HEADERS,
   RESPONSES_API_ENDPOINT,
   resolveModelForProvider
-} from "../../config.js";
+} from "../../../config.js";
 import { extractResponseText } from "./helpers.js";
 
 const MODEL = resolveModelForProvider("gpt-5.4");
